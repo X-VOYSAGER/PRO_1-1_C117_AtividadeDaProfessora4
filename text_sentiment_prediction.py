@@ -28,17 +28,17 @@ tokenizer.fit_on_texts(training_sentences)
 emo_code_url = {
     "vazio": [0, "./static/assets/emoticons/Empty.png"],
     "tristeza": [1,"./static/assets/emoticons/Sadness.png" ],
-    "entusiasmo": [2, "./static/assets/emoticons/Enthusiasm.png"],
+    "entusiasmo": [2, "./static/assets/emoticons/Enthusiastic.png"],
     "neutro": [3, "./static/assets/emoticons/Neutral.png"],
     "preocupação": [4, "./static/assets/emoticons/Worry.png"],
     "surpresa": [5, "./static/assets/emoticons/Surprise.png"],
     "amor": [6, "./static/assets/emoticons/Love.png"],
-    "diversão": [7, "./static/assets/emoticons/fun.png"],
-    "ódio": [8, "./static/assets/emoticons/hate.png"],
-    "felicidade": [9, "./static/assets/emoticons/happiness.png"],
-    "tédio": [10, "./static/assets/emoticons/boredom.png"],
-    "alívio": [11, "./static/assets/emoticons/relief.png"],
-    "raiva": [12, "./static/assets/emoticons/anger.png"]
+    "diversão": [7, "./static/assets/emoticons/Fun.png"],
+    "ódio": [8, "./static/assets/emoticons/Hate.png"],
+    "felicidade": [9, "./static/assets/emoticons/Happiness.png"],
+    "tédio": [10, "./static/assets/emoticons/Boredom.png"],
+    "alívio": [11, "./static/assets/emoticons/Relief.png"],
+    "raiva": [12, "./static/assets/emoticons/Anger.png"]
     
     }
 
@@ -65,3 +65,53 @@ def predict(text):
                 predicted_emotion_img_url=value[1]
                 predicted_emotion=key
         return predicted_emotion, predicted_emotion_img_url
+def show_entry():
+    day_entry_list = pd.read_csv("./static/assets/data_files/data_entry.csv")
+
+    day_entry_list = day_entry_list.iloc[::-1]
+    
+    date1 = (day_entry_list['date'].values[0])
+    date2 =(day_entry_list['date'].values[1])
+    date3 = (day_entry_list['date'].values[2])
+
+    entry1 = day_entry_list['text'].values[0]
+    entry2 = day_entry_list['text'].values[1]
+    entry3 = day_entry_list['text'].values[2]
+
+    emotion1 = day_entry_list["emotion"].values[0]
+    emotion2 = day_entry_list["emotion"].values[1]
+    emotion3 = day_entry_list["emotion"].values[2]
+
+    emotion_url_1=""
+    emotion_url_2=""
+    emotion_url_3=""
+
+    for key, value in emo_code_url.items():
+        if key==emotion1:
+            emotion_url_1 = value[1]
+        if key==emotion2:
+            emotion_url_2 = value[1]
+        if key==emotion3:
+            emotion_url_3 = value[1]
+
+    return [
+        {
+            "date": date1,
+            "entry": entry1,
+            "emotion": emotion1,
+            "emotion_url": emotion_url_1
+        },
+        {
+            "date": date2,
+            "entry": entry2,
+            "emotion": emotion2,
+            "emotion_url": emotion_url_2
+        },
+        {
+            "date": date3,
+            "entry": entry3,
+            "emotion": emotion3,
+            "emotion_url": emotion_url_3
+        }
+    ]
+

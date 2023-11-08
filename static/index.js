@@ -4,6 +4,7 @@ let display_date= "Data: " + date.toLocaleDateString('pt-BR', {weekday: 'short',
 //Carregar o DOM HTML
 $(document).ready(function () {
     $("#display_date").html(display_date)
+    $('#save_button').prop('disabled', true);
 })
 
 let predicted_emotion;
@@ -37,10 +38,37 @@ $(function () {
 
                 $("#emo_img_url").attr('src', emo_url);
                 $('#emo_img_url').css("display", "block");
+                predicted_emotion = result.data.predicted_emotion
+                $('#save_button').prop('disabled', false);
             },
             error: function (result) {
                 alert(result.responseJSON.message)
             }
         });
-    });
+    
+});
+$("#save_button").click(function() {
+    var saveData={
+       "date":display_date,
+       "text":$("#text").val(),
+       "emotion":predicted_emotion
+    }
+    $.ajax({
+       type: 'POST',
+       url: "/save-entry",
+       data: JSON.stringify(saveData),
+       dataType: "json",
+       contentType: 'application/json',
+       success: function () {
+           alert("Entrada salva com sucesso!")
+           window.location.reload()
+       },
+       error: function (result) {
+           alert(result.responseJSON.message)
+       }
+   });
+
+
+   }
+   )
 })
